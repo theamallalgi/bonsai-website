@@ -1,0 +1,653 @@
+// Imports
+@font-face {
+    font-family: 'Kunika';
+    src: local('Kunika'), url('../../assets/fonts/Kunika-Regular.ttf');
+}
+
+// Media Tags
+@mixin tablet() {
+	@media (min-width: 425px) {
+		@content;
+	}
+};
+@mixin laptop() {
+	@media (min-width: 770px) {
+		@content;
+	}
+};
+
+// variables 
+$accent-color: #96bc89;
+$primary-color: #1e3219;
+$secondary-color: #d0ce6f;
+$tertiary-color: #f86900;
+$foreground-color: #d9ffb1;
+$background-color: $primary-color;
+$font: Kunika;
+
+// boilerplate styling
+* {
+	box-sizing: border-box;
+	padding: 0;
+	margin: 0;
+	scroll-behavior: smooth;
+}
+
+body {
+	background-color: $background-color;
+	color: $foreground-color;
+	font-family: $font;
+	overflow-x: hidden;
+}
+
+img {
+	max-width: 100%;
+}
+
+::selection {
+	background-color: $tertiary-color;
+	color: $primary-color;
+}
+
+::-webkit-scrollbar {
+	display: none;
+}
+
+h1, h2, h3, h4, h5, h6, a, img {
+	z-index: 50;
+}
+
+// styling
+
+// Preloader
+.preloader {
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 100vh;
+	width: 100%;
+	z-index: 1000;
+	color: $primary-color;
+	background-color: $secondary-color;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	transition: all 300ms ease-in;
+
+	img {
+		height: 15rem;
+		animation: rotate 1s linear infinite;
+		@include laptop() { height: 20rem; }
+	}
+	h4 {
+		margin-top: 8rem;
+		font-size: 1.5rem;
+		font-weight: 500;
+	}
+
+	&::after {
+		content: 'Loading the website';
+		position: absolute;
+		text-align: left;
+		line-height: 0.8;
+		bottom: 0;
+		left: 0;
+		opacity: 0.1;
+		font-size: 17rem; // 17
+		pointer-events: none;
+		font-weight: 900;
+		color: darken($secondary-color, 50%);
+		margin-bottom: -1rem;
+		margin-right: -1rem;
+	}
+}
+
+@keyframes rotate {
+	from { transform: rotate(360deg) }
+	to { transform: rotate(0deg) }
+}
+
+.preloader--done {
+	transform: translateX(-100%);
+	pointer-events: none;
+	img { animation: unset; }
+}
+
+// Navigation
+nav {
+	padding: 1rem; // 1 2.5
+	display: flex;
+	justify-content: space-between;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 10vh;
+	z-index: 888;
+	backdrop-filter: blur(5rem);
+	@include tablet() { padding: 1rem 2.5rem }
+
+	.logo {
+		z-index: 999;
+		a {
+			width: 7rem;
+			text-decoration: none;
+			color: $secondary-color;
+			font-size: 2rem; // 2
+		}
+	}
+
+	ul {
+		position: fixed;
+		transform: translateY(-100%);
+		transition: transform 0.3s ease-in-out;
+
+		li {
+			display: none;
+			list-style-type: none;
+			margin: 1rem;
+
+			a {
+				text-decoration: none;
+				color: $tertiary-color;
+			}
+		}
+	}
+
+	.burger {
+		z-index: 999;
+		cursor: pointer;
+		div {
+			margin-block: 0.3rem;
+			background-color: $secondary-color;
+			height: 0.2rem;
+			margin-left: auto;
+			border-radius: 0.8rem;
+			transition: all 0.3s ease-in-out;
+		}
+
+		.line-1 {
+			width: 0.7rem;
+		}
+		.line-2 {
+			width: 0.9rem;
+		}
+		.line-3 {
+			width: 1.2rem;
+		}
+	}
+
+	.icons {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		.cart {
+			z-index: 999;
+			a {
+				font-size: 1.5rem; // 1.5
+				display: inline-block;
+				color: $secondary-color;
+				margin-inline: 2rem;
+			}
+		}
+	}
+}
+
+nav.open {
+	ul {
+		transform: translateY(0);
+		padding-block: 8rem; // 6
+		padding-inline: 1rem; // 2.5
+		height: 100vh;
+		width: 100%;
+		position: fixed;
+		top: 0;
+		left: 0;
+		background-color: $secondary-color;
+		display: flex;
+		flex-direction: column;
+		@include tablet() { padding: 6rem 2.5rem }
+
+		li {
+			display: block;
+			a {
+				font-size: 3rem; // 5
+				font-weight: 800;
+				color: $primary-color;
+				&:hover, &:focus-visible {
+					text-decoration: underline;
+					text-decoration-color: $tertiary-color;
+				}
+				@include tablet() { font-size: 4rem }
+				@include laptop() { font-size: 5rem }
+			}
+		}
+
+		&::after {
+			content: 'find your own way through: "Navigation"';
+			position: absolute;
+			text-align: right;
+			line-height: 0.6;
+			bottom: 0;
+			left: 0;
+			opacity: 0.1;
+			font-size: 17rem; // 17
+			pointer-events: none;
+			font-weight: 900;
+			color: darken($secondary-color, 50%);
+			margin-bottom: -4rem;
+			margin-left: -1rem;
+		}
+	}
+	.burger div { background-color: $primary-color }
+	.cart a { color: $primary-color }
+	.logo a { color: $primary-color }
+	.line-1 { transform: translateY(8px) rotate(45deg); width: 1.7rem;}
+	.line-2 { opacity: 0; }
+	.line-3 { transform: translateY(-8px) rotate(-45deg); width: 1.7rem;}
+}
+
+// home
+.home {
+	padding-top: 8rem; // 10
+	padding-inline: 1rem; // 2.5
+	height: 95vh;
+	display: flex;
+	overflow: hidden;
+	max-width: 100%;
+	@include tablet() { padding-inline: 2.5rem }
+	@include laptop() { padding-top: 10rem }
+
+	.home__grid-1 {
+		height: 100%;
+		background-color: $primary-color;
+
+		h1 {
+			font-size: 2.5rem; // 5.8
+			line-height: 1;
+			z-index: 10;
+			font-weight: 900;
+			@include tablet() { font-size: 3rem; }
+			@include laptop() { font-size: 5.8rem; }
+			span {
+				font-size: 2.25rem; // 5.5
+				color: $secondary-color;
+				font-weight: 500;
+				@include tablet() { font-size: 2.5rem; }
+				@include laptop() { font-size: 5.5rem; }
+			}
+		}
+		h3 {
+			font-size: 1rem; // 2
+			font-weight: 500;
+			max-width: 70vw;
+			margin-right: auto;
+			color: darken($foreground-color, 10%);
+			margin-block: 1.25rem;
+			z-index: 10;
+			@include laptop() { font-size: 2rem; }
+		}
+		a {
+			display: inline-block;
+			margin-block: 0.45rem;
+			background-color: $tertiary-color;
+			padding: 1rem 1.5rem;
+			text-decoration: none;
+			color: $primary-color;
+			font-size: 2rem; // 2
+			font-weight: 800;
+			text-transform: uppercase;
+			border-radius: 0.4rem;
+			z-index: 10;
+			@include tablet() { font-size: 1.5rem; }
+			@include laptop() { font-size: 2rem; }
+			&:hover, &:focus-visible {
+				background-color: darken($tertiary-color, 5%);
+			}
+		}
+	}
+
+	&::after {
+		content: 'LittleTrees';
+		position: absolute;
+		bottom: 0;
+		right: 0;
+		opacity: 0.05;
+		font-size: 17rem; // 17
+		margin-bottom: -3rem;
+		pointer-events: none;
+		font-weight: 900;
+		color: $secondary-color;
+		@include laptop() { margin-right: -2rem; }
+	}
+}
+
+// facts
+.facts {
+	min-height: 35vh;
+	padding-inline: 1rem; // 2.5
+	padding-block: 2rem;
+	background-color: #ad9673;
+	display: flex;
+	justify-content: space-evenly;
+	align-items: center;
+	position: relative;
+	overflow: hidden;
+	flex-direction: column; // row
+	@include laptop() { 
+		padding-inline: 2.5rem;
+		flex-direction: row;
+		overflow: unset;
+	}
+
+	.facts__block-1 {
+		margin-block: auto;
+
+		h2 {
+			font-size: 1.2rem; // 2.5
+			color: $primary-color;
+			max-width: 80vw; // 40
+			margin-right: auto;
+			@include laptop() { font-size: 2.5rem; max-width: 40vw; }
+		}
+	}
+
+	.facts__block-2 {
+		img {
+			z-index: 777;
+			height: 20rem; // 37
+			@include laptop() { height: 37rem; margin-top: -10rem;}
+		}
+	}
+
+	&::after {
+		content: 'Recycle';
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		opacity: 0.08;
+		font-size: 19rem; // 19
+		pointer-events: none;
+		margin-bottom: -7rem;
+		margin-left: -3rem;
+		font-weight: 900;
+		color: darken(#ad9673, 50%);
+	}
+}
+
+// images
+.images {
+	display: flex;
+	overflow-x: hidden;
+	padding-bottom: 1rem;
+	margin-left: -5rem;
+
+	img {
+		height: 20rem; // 30
+		@include laptop() { height: 30rem; }
+
+		&:first-of-type { border-radius: 0.4rem 0 0 0.4rem}
+		&:last-of-type { border-radius: 0 0.4rem 0.4rem 0}
+	}
+}
+
+// features
+.features {
+	padding: 2rem 1rem; // 2 2.5
+	padding-top: 4rem;
+	background-color: $primary-color;
+	color: $secondary-color;
+	display: flex;
+	overflow-x: hidden;
+	flex-wrap: wrap;
+	@include laptop() { padding: 2rem 2.5rem; }
+
+	section {
+		padding: 1rem 1.5rem;
+		margin: 1rem;
+		display: flex;
+		justify-content: space-evenly;
+
+		.icon {
+			font-size: 2rem; // 4
+			margin: 1rem;
+			margin-right: 3rem;
+			color: darken($secondary-color, 10%);
+			@include laptop() { font-size: 4rem; }
+		}
+
+		h1 {
+			font-size: 1.2rem; // 2
+			@include laptop() { font-size: 2rem; }
+		}
+		p {
+			font-size: 1rem; // 1.2
+			color: darken($secondary-color, 20%);
+			max-width: 30ch;
+			@include laptop() { font-size: 1.2em; }
+		}
+	}
+}
+
+// products
+.products {
+	background-color: $accent-color;
+	padding: 4rem 1rem; // 4 2.5
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-wrap: wrap;
+	overflow-x: hidden;
+	overflow-y: hidden;
+	position: relative;
+	flex-direction: column; // row
+	@include laptop() { padding: 4rem 2.5rem; flex-direction: row; }
+
+	.card {
+		height: 55vh; // 55
+		width: 70vw; // 20
+		background-color: $accent-color;
+		border: 0.2rem solid $primary-color;
+		border-radius: 0.4rem;
+		position: relative;
+		margin: 1rem;
+		z-index: 555;
+		@include laptop() { width: 20vw; }
+
+		.desc {
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			padding: 1rem 1.5rem;
+
+			h2 {
+				font-size: 2rem; // 2.5
+				color: $secondary-color;
+				line-height: 1;
+				@include laptop() { font-size: 2.5rem; }
+			}
+			h3 {
+				margin-top: 0.5rem;
+				font-size: 1.5rem; // 2
+				color: lighten($secondary-color, 10%);
+				del { color: lighten(black, 60%); font-style: italic; }
+				@include laptop() { font-size: 2rem; }
+			}
+			a {
+				margin-top: 0.55rem;
+				font-size: 2rem; // 2.5
+				font-weight: 800;
+				background-color: $tertiary-color;
+				color: $primary-color;
+				text-decoration: none;
+				padding: 0.5rem;
+				border-radius: 0.4rem;
+				display: block;
+				text-align: center;
+				@include laptop() { font-size: 2.5rem; }
+				&:hover, &:focus-visible { background-color: darken($tertiary-color, 5%) }
+			}
+		}
+	}
+
+	.card-1 {background: linear-gradient(rgba(0, 0, 0, 0), rgb(30, 50, 25) 80%), url('../../assets/images/plants/1-green-ficus.jpg') }
+	.card-2 {background: linear-gradient(rgba(0, 0, 0, 0), rgb(30, 50, 25) 80%), url('../../assets/images/plants/2-Adenium Plant.jpg') }
+	.card-3 {background: linear-gradient(rgba(0, 0, 0, 0), rgb(30, 50, 25) 80%), url('../../assets/images/plants/3-Sakura-Bonsai.jpg') }
+	.card-4 {background: linear-gradient(rgba(0, 0, 0, 0), rgb(30, 50, 25) 80%), url('../../assets/images/plants/4-Green-Maple-Bonsai.jpg') }
+	.card-5 {background: linear-gradient(rgba(0, 0, 0, 0), rgb(30, 50, 25) 80%), url('../../assets/images/plants/5-Trident-Maple-Bonsai.jpg') }
+	.card-6 {background: linear-gradient(rgba(0, 0, 0, 0), rgb(30, 50, 25) 80%), url('../../assets/images/plants/6-Cape-Jasmine.jpg') }
+	.card-7 {background: linear-gradient(rgba(0, 0, 0, 0), rgb(30, 50, 25) 80%), url('../../assets/images/plants/7-Cedar-Bonsai-2.jpg') }
+	.card-8 {background: linear-gradient(rgba(0, 0, 0, 0), rgb(30, 50, 25) 80%), url('../../assets/images/trees/green-leaves-(2).jpg') }
+
+	.card-1, .card-2, .card-3, .card-4, .card-5, .card-6, .card-7, .card-8 {
+		background-repeat: no-repeat;
+		background-position: center;
+		background-size: cover;
+	}
+
+	&::after {
+		content: 'Our Products';
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		opacity: 0.4;
+		font-size: 20rem; // 20
+		pointer-events: none;
+		font-weight: 900;
+		color: darken($secondary-color, 50%);
+		margin-bottom: -5rem;
+	}
+}
+
+// images-2
+.images-2 {
+	display: flex;
+	overflow-x: hidden;
+	margin-left: -2.5rem;
+
+	img {
+		height: 20rem; // 30
+		@include laptop() { height: 30rem; }
+
+		&:first-of-type { border-radius: 0.4rem 0 0 0.4rem}
+		&:last-of-type { border-radius: 0 0.4rem 0.4rem 0}
+	}
+}
+
+// contact
+.contact {
+	padding: 2rem 2.5rem;
+	// max-height: 100vh;
+	background-color: $secondary-color;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	gap: 1rem;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: cover;
+	position: relative;
+	overflow-x: hidden;
+	overflow-y: hidden;
+
+	.cont {
+		width: 100%;
+		display: flex;
+		flex-direction: column; // row
+		justify-content: space-between;
+		align-items: space-between;
+		gap: 2rem;
+		@include laptop() { flex-direction: row; }
+		.social {
+			list-style: none;
+			display: flex;
+			flex-direction: column;
+			text-align: center; // left
+			@include laptop() { text-align: left; }
+
+			li {
+				margin-block: 1rem;
+				a {
+					text-decoration: none;
+					color: $primary-color;
+					font-size: 1.5rem; // 2
+					@include laptop() { font-size: 2rem; }
+					i { font-size: 1.5rem}
+					&:hover, a:focus-visible {
+						text-decoration: underline;
+					}
+				}
+			}
+		}
+		.logo {
+			font-size: 5rem; // 8.5
+			margin-block: auto;
+			@include laptop() { font-size: 8.5rem; }
+
+			a {
+				text-decoration: none;
+				color: $primary-color;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				line-height: 0.65;
+
+				span.undertxt {
+					font-size: 1.5rem; // 2
+					color: lighten($primary-color, 10%);
+					@include laptop() { font-size: 2rem; }
+				}
+			}
+			h4 {
+				margin-top: 3rem;
+				font-size: 1.3rem; // 1.3
+				text-align: center;
+				font-weight: 500;
+				color: lighten($primary-color, 10%);
+
+				a {
+					text-decoration: underline;
+					text-decoration-color: $tertiary-color;
+					display: inline-block;
+				}
+			}
+		}
+		.address {
+			padding: 1rem 1.5rem;
+			border: 0.2rem solid $primary-color;
+			color: $primary-color;
+			border-radius: 0.4rem;
+			h3 {
+				font-size: 2rem; // 3
+				@include laptop() { font-size: 3rem; }
+			}
+			h4 {
+				margin-top: 1rem;
+				font-size: 1.2rem; // 2
+				color: lighten($primary-color, 10%);
+				@include laptop() { font-size: 2rem; }
+			}
+			h5 {
+				font-size: 1rem; // 1.5
+				color: lighten($primary-color, 10%);
+				@include laptop() { font-size: 1.5rem; }
+			}
+		}
+	}
+
+	&::after {
+		content: 'Contact Us';
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		opacity: 0.1;
+		font-size: 16rem; // 16
+		pointer-events: none;
+		font-weight: 900;
+		color: darken($secondary-color, 50%);
+		margin-bottom: -5.5rem; // -5.5
+		margin-left: -3rem;
+	}
+}
